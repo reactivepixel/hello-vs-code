@@ -153,6 +153,7 @@ make compose-run       # Run with docker-compose (production)
 
 # Cleanup
 make clean            # Clean all artifacts and images
+make docker-purge     # Nuclear option: stop and remove ALL Docker containers/images/volumes
 ```
 
 ### 2. VS Code Tasks

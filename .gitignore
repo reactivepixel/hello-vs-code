@@ -13,11 +13,6 @@
 *.a
 *.lib
 
-# Compiled executables
-hello
-hello-debug
-/builds/hello
-/builds/hello-debug
 
 # Build directories
 build/
@@ -34,8 +29,8 @@ x86/
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
-Makefile
 *.cmake
+config.mk
 !CMakeLists.txt
 
 # Compiler-specific
