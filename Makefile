@@ -1,9 +1,12 @@
 # Simplified Makefile for Docker-based C++ development
 
-IMAGE_NAME = hello-world-cpp
+# Load environment variables from .env file
+include .env
+
+IMAGE_NAME = $(APP_NAME)-world-cpp
 SOURCE_DIR = src
 BUILD_DIR = builds
-TARGET = hello
+TARGET = $(APP_NAME)
 
 # Default target - build and extract executable
 all: docker-build
@@ -11,7 +14,7 @@ all: docker-build
 # Build Docker image and extract executables
 docker-build:
 	@echo "Building Docker image with both debug and release versions..."
-	docker build -t $(IMAGE_NAME) .
+	docker build --build-arg APP_NAME=$(APP_NAME) --build-arg APP_ENTRY=$(APP_ENTRY) -t $(IMAGE_NAME) .
 	@echo "Extracting executables..."
 	docker create --name temp-extract $(IMAGE_NAME)
 	docker cp temp-extract:/app/$(BUILD_DIR)/$(TARGET) ./$(BUILD_DIR)/
@@ -35,7 +38,7 @@ docker-run:
 
 # Run in Docker container (debug version)
 docker-run-debug:
-	docker run --rm $(IMAGE_NAME) ./builds/hello-debug
+	docker run --rm $(IMAGE_NAME) sh -c "./builds/$(TARGET)-debug"
 
 # Interactive development shell
 docker-shell:
@@ -49,7 +52,7 @@ docker-debug:
 	docker run --rm -it \
 		-v $(PWD)/$(SOURCE_DIR):/app/$(SOURCE_DIR) \
 		-v $(PWD)/$(BUILD_DIR):/app/$(BUILD_DIR) \
-		$(IMAGE_NAME) gdb ./builds/hello-debug
+		$(IMAGE_NAME) gdb ./builds/$(TARGET)-debug
 
 # Run with docker-compose (release)
 compose-run:
@@ -62,12 +65,12 @@ compose-debug:
 # Local build (if you have g++ installed)
 local-build:
 	mkdir -p $(BUILD_DIR)
-	g++ -std=c++17 -Wall -O2 -o $(BUILD_DIR)/$(TARGET) $(SOURCE_DIR)/hello.cpp
+	g++ -std=c++17 -Wall -O2 -o $(BUILD_DIR)/$(TARGET) $(SOURCE_DIR)/$(APP_ENTRY)
 
 # Local debug build
 local-debug:
 	mkdir -p $(BUILD_DIR)
-	g++ -std=c++17 -Wall -g -O0 -o $(BUILD_DIR)/$(TARGET)-debug $(SOURCE_DIR)/hello.cpp
+	g++ -std=c++17 -Wall -g -O0 -o $(BUILD_DIR)/$(TARGET)-debug $(SOURCE_DIR)/$(APP_ENTRY)
 
 # Development mode - build and run locally
 dev: local-build

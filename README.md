@@ -15,6 +15,7 @@ todo/
 │   ├── tasks.json       # Build and run tasks
 │   ├── launch.json      # Debug configuration
 │   └── c_cpp_properties.json # IntelliSense settings
+├── .env                 # Environment configuration (app name, entry point)
 ├── Dockerfile           # Unified Docker configuration
 ├── docker-compose.yml   # Docker Compose configuration
 ├── build.sh            # Build script
@@ -22,6 +23,15 @@ todo/
 ├── .dockerignore       # Docker ignore file
 └── README.md           # This file
 ```
+
+## Configuration
+
+The project uses a `.env` file for centralized configuration:
+
+- **APP_NAME**: The name of the application executable (default: `hello`)
+- **APP_ENTRY**: The main source file (default: `hello.cpp`)
+
+To change the application name or entry point, simply edit the `.env` file and rebuild.
 
 ## Prerequisites
 

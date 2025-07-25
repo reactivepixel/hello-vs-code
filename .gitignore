@@ -64,7 +64,7 @@ vgcore.*
 # Docker
 .dockerignore
 docker-compose.override.yml
-.env
+# Note: .env is tracked since it contains project configuration
 
 # Git
 *.orig

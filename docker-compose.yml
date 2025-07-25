@@ -5,17 +5,22 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: hello-world-cpp
+      args:
+        APP_NAME: ${APP_NAME}
+        APP_ENTRY: ${APP_ENTRY}
+    container_name: ${APP_NAME}-world-cpp
     volumes:
       - ./builds:/app/builds
       - ./src:/app/src
     # Default: run the optimized version
-    command: ./builds/hello
+    command: sh -c "./builds/${APP_NAME}"
+    env_file:
+      - .env
 
   # Override for development/debugging
   cpp-app-debug:
     extends: cpp-app
-    container_name: hello-world-cpp-debug
+    container_name: ${APP_NAME}-world-cpp-debug
     # Interactive mode for debugging
     stdin_open: true
     tty: true
