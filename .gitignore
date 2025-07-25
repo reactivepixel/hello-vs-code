@@ -50,9 +50,7 @@ vgcore.*
 *.stackdump
 
 # IDE and Editor files
-.vscode/settings.json
-.vscode/launch.json
-.vscode/tasks.json
+# Note: VS Code config files are now tracked since they use environment variables
 .vscode/.ropeproject
 *.swp
 *.swo

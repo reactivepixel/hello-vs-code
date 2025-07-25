@@ -1,0 +1,6 @@
+{
+    "dotenv.enableAutocloaking": false,
+    "files.associations": {
+        ".env": "properties"
+    }
+}

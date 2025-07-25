@@ -48,7 +48,29 @@ To change the application name or entry point, simply edit the `.env` file and r
 
 ## Quick Start
 
-### Option 1: One Command Build
+### Option 1: Environment Configuration
+
+First, configure your application by editing the `.env` file:
+
+```bash
+APP_NAME=your_app_name
+APP_ENTRY=your_file.cpp
+```
+
+Then build and run:
+
+```bash
+# Build both debug and release versions with one command
+make
+
+# Run release version
+./builds/your_app_name
+
+# Run debug version
+./builds/your_app_name-debug
+```
+
+### Option 2: One Command Build
 
 ```bash
 # Build both debug and release versions with one command
@@ -132,9 +154,16 @@ gdb --version
 
 Install these extensions for the best development experience:
 
-1. **C/C++** (ms-vscode.cpptools)
-2. **C/C++ Extension Pack** (ms-vscode.cpptools-extension-pack)
-3. **Docker** (ms-azuretools.vscode-docker)
+1. **C/C++** (ms-vscode.cpptools) - Essential for C++ IntelliSense and debugging
+2. **C/C++ Extension Pack** (ms-vscode.cpptools-extension-pack) - Complete C++ development tools
+3. **Docker** (ms-azuretools.vscode-docker) - Docker container management
+4. **DotENV** (mikestead.dotenv) - Syntax highlighting for .env files
+5. **Command Variable** (rioj7.command-variable) - Required for loading environment variables from .env into launch configurations
+
+**Required Extensions for Environment Loading:**
+- The **DotENV** extension provides syntax highlighting for .env files
+- The **Command Variable** extension is essential for the debug configuration to properly read APP_NAME from the .env file
+- Without these extensions, VS Code debugging may not work correctly with dynamic environment variables
 
 ## Build Methods
 
@@ -170,11 +199,16 @@ make docker-purge     # Nuclear option: stop and remove ALL Docker containers/im
 
 Use `Ctrl+Shift+P` → "Tasks: Run Task" and choose:
 
-- **Docker Build** - Build the application in Docker
-- **Docker Build and Extract** - Build and copy executable to local builds/
-- **Docker Run** - Run the application in Docker
+- **Docker Build** - Build the application using environment variables
+- **Docker Run** - Run the application in Docker container
 - **Local Build (Development)** - Build locally for debugging
-- **Run Local Build** - Build and run locally
+- **Local Debug Build** - Build debug version locally
+- **Run Local Build** - Build and run release version
+- **Run Debug Build** - Build and run debug version
+- **Docker Shell** - Interactive shell in container
+- **Docker Debug** - GDB debugging in container
+
+All tasks automatically use the APP_NAME and APP_ENTRY variables from `.env`.
 
 ### 3. Manual Docker Commands
 

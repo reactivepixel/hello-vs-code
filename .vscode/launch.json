@@ -1,0 +1,39 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C++ Debug (Local)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/builds/${input:appName}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "envFile": "${workspaceFolder}/.env",
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Load Environment and Build",
+            "miDebuggerPath": "gdb"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "appName",
+            "type": "command",
+            "command": "extension.commandvariable.file.content",
+            "args": {
+                "fileName": "${workspaceFolder}/.env",
+                "regex": "APP_NAME=(.+)",
+                "regexGroup": 1
+            }
+        }
+    ]
+}
