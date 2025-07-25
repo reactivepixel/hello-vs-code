@@ -1,0 +1,37 @@
+# Development Dockerfile with full debugging capabilities
+FROM ubuntu:22.04
+
+# Avoid prompts from apt
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install development tools including debugging utilities
+RUN apt-get update && \
+    apt-get install -y \
+    build-essential \
+    g++ \
+    make \
+    gdb \
+    valgrind \
+    strace \
+    vim \
+    nano \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy source files
+COPY src/ ./src/
+
+# Create builds directory
+RUN mkdir -p builds
+
+# Compile with debug symbols for development
+RUN g++ -std=c++17 -Wall -g -O0 -o builds/hello-debug src/hello.cpp
+
+# Also create optimized version
+RUN g++ -std=c++17 -Wall -O2 -o builds/hello src/hello.cpp
+
+# Default command runs the debug version
+CMD ["gdb", "--batch", "--ex", "run", "--ex", "bt", "--args", "./builds/hello-debug"]

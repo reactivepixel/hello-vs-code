@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  cpp-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hello-world-cpp
+    volumes:
+      - ./builds:/app/builds
+      - ./src:/app/src
+    # Default: run the optimized version
+    command: ./builds/hello
+
+  # Override for development/debugging
+  cpp-app-debug:
+    extends: cpp-app
+    container_name: hello-world-cpp-debug
+    # Interactive mode for debugging
+    stdin_open: true
+    tty: true
+    command: bash
