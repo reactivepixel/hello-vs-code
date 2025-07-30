@@ -161,6 +161,7 @@ Install these extensions for the best development experience:
 5. **Command Variable** (rioj7.command-variable) - Required for loading environment variables from .env into launch configurations
 
 **Required Extensions for Environment Loading:**
+
 - The **DotENV** extension provides syntax highlighting for .env files
 - The **Command Variable** extension is essential for the debug configuration to properly read APP_NAME from the .env file
 - Without these extensions, VS Code debugging may not work correctly with dynamic environment variables
