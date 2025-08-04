@@ -65,25 +65,24 @@ compose-debug:
 # Local build (if you have g++ installed)
 local-build:
 	mkdir -p $(BUILD_DIR)
-	g++ -std=c++17 -Wall -O2 -o $(BUILD_DIR)/$(TARGET) $(SOURCE_DIR)/$(APP_ENTRY)
+	g++ -std=c++17 -Wall -O2 $(SOURCE_DIR)/$(APP_ENTRY) -o $(BUILD_DIR)/$(TARGET)
 
 # Local debug build
 local-debug:
 	mkdir -p $(BUILD_DIR)
-	g++ -std=c++17 -Wall -g -O0 -o $(BUILD_DIR)/$(TARGET)-debug $(SOURCE_DIR)/$(APP_ENTRY)
+	g++ -std=c++17 -Wall -g -O0 $(SOURCE_DIR)/$(APP_ENTRY) -o $(BUILD_DIR)/$(TARGET)-debug
 
 # Development mode - build and run locally
 dev: local-build
 	./$(BUILD_DIR)/$(TARGET)
 
-# Clean everything
+# Clean everything - comprehensive cleanup including Docker
 clean:
+	@echo "🧹 Cleaning build artifacts..."
 	rm -f $(BUILD_DIR)/$(TARGET) $(BUILD_DIR)/$(TARGET)-debug
+	@echo "🐳 Cleaning Docker resources..."
 	docker rmi $(IMAGE_NAME) 2>/dev/null || true
 	docker-compose down 2>/dev/null || true
-
-# Kill all Docker containers and clean up everything
-docker-purge:
 	@echo "🛑 Stopping all Docker containers..."
 	docker stop $$(docker ps -aq) 2>/dev/null || true
 	@echo "🗑️  Removing all Docker containers..."
@@ -94,7 +93,7 @@ docker-purge:
 	docker volume prune -f 2>/dev/null || true
 	@echo "🌐 Removing unused networks..."
 	docker network prune -f 2>/dev/null || true
-	@echo "✅ Docker cleanup complete!"
+	@echo "✅ Complete cleanup finished!"
 
 # Show help
 help:
@@ -122,8 +121,7 @@ help:
 	@echo "  make compose-debug- Debug shell with docker-compose"
 	@echo ""
 	@echo "🧹 Cleanup:"
-	@echo "  make clean        - Clean all artifacts and images"
-	@echo "  make docker-purge - Stop and remove ALL Docker containers/images/volumes"
+	@echo "  make clean        - Clean build artifacts and perform comprehensive Docker cleanup"
 
 # Declare phony targets
-.PHONY: all docker-build run run-debug docker-run docker-run-debug docker-shell docker-debug compose-run compose-debug local-build local-debug dev clean docker-purge help
+.PHONY: all docker-build run run-debug docker-run docker-run-debug docker-shell docker-debug compose-run compose-debug local-build local-debug dev clean help
