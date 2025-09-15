@@ -73,6 +73,24 @@ local-debug:
 dev: local-build
 	./$(BUILD_DIR)/$(TARGET)
 
+# macOS-specific build (release)
+mac-build:
+	mkdir -p $(BUILD_DIR)
+	g++ -std=c++17 -Wall -O2 -o $(BUILD_DIR)/$(TARGET)-mac $(SOURCE_DIR)/hello.cpp
+
+# macOS-specific build (debug)
+mac-debug:
+	mkdir -p $(BUILD_DIR)
+	g++ -std=c++17 -Wall -g -O0 -o $(BUILD_DIR)/$(TARGET)-mac-debug $(SOURCE_DIR)/hello.cpp
+
+# Run macOS release build
+mac-run: mac-build
+	./$(BUILD_DIR)/$(TARGET)-mac
+
+# Run macOS debug build
+mac-run-debug: mac-debug
+	./$(BUILD_DIR)/$(TARGET)-mac-debug
+
 # Clean everything
 clean:
 	rm -f $(BUILD_DIR)/$(TARGET) $(BUILD_DIR)/$(TARGET)-debug
